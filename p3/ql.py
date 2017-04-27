@@ -78,27 +78,33 @@ print np.reshape(Rewards, (height, width))
 def qlearning(s1, a, s2):
     Q[s1][a] = Rewards[s2] + discount * max(Q[s2])
     return
-def type (state,tipo):
-    prob = random.random()
+
+
+def type(state,tipo):
+
     if tipo == "random":
         return getRndAction(state)
-    if tipo == "greedy":
+    elif tipo == "greedy":
         return greedy(state)
-    if tipo == "e-greedy1":
-        if prob > 0.2
+    elif tipo == "egreedy1":
+        prob = random.random()
+        if prob > 0.2:
             return greedy(state)
-        else
-            return getRndAction(state)
 
-    if tipo == "e-greedy2":
-        if prob > 0.35
+        return getRndAction(state)
+
+    elif tipo == "egreedy2":
+        prob = random.random()
+        if prob > 0.35:
             return greedy(state)
-        else
-            return getRndAction(state)
+
+        return getRndAction(state)
+
 
 def greedy(state):
-    maxQ = np.argmax(Q[state])
+
     if max(Q[state]) > 0:
+        maxQ = np.argmax(Q[state])
         if maxQ == 0:
             return "UP"
         if maxQ == 1:
@@ -107,31 +113,37 @@ def greedy(state):
             return "DOWN"
         if maxQ == 3:
             return "LEFT"
+    else:
+        return getRndAction(state)
 # Episodes
-labels = []
-acciones = []
-for tipo in ("random", "greedy", "e-greedy1 ", "e-greedy2"):
-    labels.append(tipo)
-    actions = 0
-    Q = np.zeros((height*width, actions))
+#labels = []
+#acciones = []
+epi = 1000
+for tipo in ("random", "greedy", "egreedy1", "egreedy2"):
+    #labels.append(tipo)
+    num_act = 0
+    Q = np.zeros((height * width, num_actions))
 
-    for i in xrange(100):
+    for i in xrange(epi):
         state = getRndState()
         while state != final_state:
-            modo = type(state,tipo)
+            num_act += 1
+            action = type(state,tipo)
 
-            action = getRndAction(state)
+            #action = getRndAction(state)
             y = getStateCoord(state)[0] + actions_vectors[action][0]
             x = getStateCoord(state)[1] + actions_vectors[action][1]
             new_state = getState(y, x)
             qlearning(state, actions_list[action], new_state)
             state = new_state
-    print "Numero de acciones de ", tipo , "= %d", actions
-    acciones.append(actions)
 
-plt.bar([1,2,3,4], acciones, align="center")
-plt.xticks([1,2,3,4], labels)
-plt.show()
+
+    print "Numero de acciones de ", tipo , "=", num_act
+    #acciones.append(num_actions)
+
+#plt.bar([1,2,3,4], acciones, align="center")
+#plt.xticks([1,2,3,4], labels)
+#plt.show()
 
 
 #print Q
