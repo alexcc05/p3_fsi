@@ -138,7 +138,7 @@ for tipo in ("random", "greedy", "egreedy1", "egreedy2"):
             state = new_state
 
 
-    print "Numero de acciones de ", tipo , "=", num_act
+    print "Numero de acciones de ", tipo , "=", num_act/epi
     #acciones.append(num_actions)
 
 #plt.bar([1,2,3,4], acciones, align="center")
